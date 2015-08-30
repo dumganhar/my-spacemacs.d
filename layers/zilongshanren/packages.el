@@ -47,6 +47,7 @@
       mwe-log-commands
       keyfreq
       js2-mode
+      nodejs-repl
       ))
 
 ;; List of packages to exclude.
@@ -145,6 +146,10 @@
   (use-package flycheck
     :defer t
     :config (setq flycheck-display-errors-delay 0.2)))
+
+(defun zilongshanren/init-nodejs-repl ()
+  (use-package nodejs-repl
+    :defer t))
 
 (defun zilongshanren/init-helm-make ()
   (use-package helm-make
@@ -325,6 +330,31 @@
       (setq ivy-use-virtual-buffers t)
       (global-set-key (kbd "C-c C-r") 'ivy-resume)
       (global-set-key (kbd "C-c j") 'counsel-git-grep))))
+
+
+(defun zilongshanren/post-init-js2-mode ()
+  (progn
+    ;; {{ patching imenu in js2-mode
+    (setq javascript-common-imenu-regex-list
+          '(("Controller" "[. \t]controller([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Controller" "[. \t]controllerAs:[ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Filter" "[. \t]filter([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("State" "[. \t]state([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Factory" "[. \t]factory([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Service" "[. \t]service([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Module" "[. \t]module([ \t]*['\"]\\([a-zA-Z0-9_\.]+\\)" 1)
+            ("ngRoute" "[. \t]when(\\(['\"][a-zA-Z0-9_\/]+['\"]\\)" 1)
+            ("Directive" "[. \t]directive([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Event" "[. \t]\$on([ \t]*['\"]\\([^'\"]+\\)" 1)
+            ("Config" "[. \t]config([ \t]*function *( *\\([^\)]+\\)" 1)
+            ("Config" "[. \t]config([ \t]*\\[ *['\"]\\([^'\"]+\\)" 1)
+            ("OnChange" "[ \t]*\$(['\"]\\([^'\"]*\\)['\"]).*\.change *( *function" 1)
+            ("OnClick" "[ \t]*\$([ \t]*['\"]\\([^'\"]*\\)['\"]).*\.click *( *function" 1)
+            ("Watch" "[. \t]\$watch( *['\"]\\([^'\"]+\\)" 1)
+            ("Function" "function[ \t]+\\([a-zA-Z0-9_$.]+\\)[ \t]*(" 1)
+            ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+            ("Task" "[. \t]task([ \t]*['\"]\\([^'\"]+\\)" 1)))
+    (setq js2-imenu-extra-generic-expression javascript-common-imenu-regex-list)))
 
 (defun zilongshanren/post-init-magit ()
   (use-package magit
