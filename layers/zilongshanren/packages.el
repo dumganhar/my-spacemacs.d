@@ -46,6 +46,7 @@
       helm-ls-git
       mwe-log-commands
       keyfreq
+      js2-mode
       ))
 
 ;; List of packages to exclude.
@@ -280,6 +281,50 @@
       (setq helm-ls-git-show-abs-or-relative 'relative)
       )))
 
+(defun zilongshanren/init-swiper ()
+  "Initialize my package"
+  (use-package swiper
+    :init
+    (progn
+      ;; http://oremacs.com/2015/04/16/ivy-mode/
+      ;; (ivy-mode -1)
+      ;; (setq magit-completing-read-function 'ivy-completing-read)
+
+      ;; http://oremacs.com/2015/04/19/git-grep-ivy/
+      (defun counsel-git-grep-function (string &optional _pred &rest _u)
+        "Grep in the current git repository for STRING."
+        (split-string
+         (shell-command-to-string
+          (format
+           "git --no-pager grep --full-name -n --no-color -i -e \"%s\""
+           string))
+         "\n"
+         t))
+
+      (defun counsel-git-grep ()
+        "Grep for a string in the current git repository."
+        (interactive)
+        (let ((default-directory (locate-dominating-file
+                                  default-directory ".git"))
+              (val (ivy-read "pattern: " 'counsel-git-grep-function))
+              lst)
+          (when val
+            (setq lst (split-string val ":"))
+            (find-file (car lst))
+            (goto-char (point-min))
+            (forward-line (1- (string-to-number (cadr lst)))))))
+      (use-package ivy
+        :defer t
+        :config
+        (progn
+          (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
+          (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
+          ))
+
+      (define-key global-map (kbd "C-s") 'swiper)
+      (setq ivy-use-virtual-buffers t)
+      (global-set-key (kbd "C-c C-r") 'ivy-resume)
+      (global-set-key (kbd "C-c j") 'counsel-git-grep))))
 
 (defun zilongshanren/post-init-magit ()
   (use-package magit
@@ -292,6 +337,6 @@
       (define-key magit-status-mode-map (kbd "C-2") 'magit-jump-to-untracked)
       (define-key magit-status-mode-map (kbd "C-3") 'magit-jump-to-staged)
       (define-key magit-status-mode-map (kbd "C-4") 'magit-jump-to-stashes)
-      (add-hook magit-section-set-visibility-hook #'(lambda(section)(message "xxxx"))
+      ;; (add-hook 'magit-section-set-visibility-hook #'(lambda(section)(message section)))
       )
     ))

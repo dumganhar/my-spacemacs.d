@@ -36,7 +36,6 @@
      c-c++
      lua
      syntax-checking
-
      ;; my layer definition
      zilongshanren
      )
@@ -168,6 +167,7 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    )
   ;; User initialization goes here
+  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
   )
 
 (defun dotspacemacs/config ()
@@ -211,7 +211,6 @@ layers configuration."
   (global-set-key (kbd "C-h r") 'helm-info-emacs)
   (global-set-key (kbd "C-h C-l") 'helm-locate-library)
   (global-set-key (kbd "C-c f") 'helm-recentf)
-  (global-set-key (kbd "C-s") 'swiper)
 
   (eval-after-load 'company
     '(progn
