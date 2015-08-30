@@ -367,6 +367,10 @@
       (define-key magit-status-mode-map (kbd "C-2") 'magit-jump-to-untracked)
       (define-key magit-status-mode-map (kbd "C-3") 'magit-jump-to-staged)
       (define-key magit-status-mode-map (kbd "C-4") 'magit-jump-to-stashes)
-      ;; (add-hook 'magit-section-set-visibility-hook #'(lambda(section)(message section)))
+
+      (add-hook 'magit-section-set-visibility-hook '(lambda (section) (let ((section-type (magit-section-type section)) )
+                                                                   (if (or  (eq 'untracked section-type)
+                                                                            (eq 'stashes section-type))
+                                                                       'hide))))
       )
     ))
