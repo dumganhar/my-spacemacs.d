@@ -95,7 +95,7 @@
 ;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
 (require 'whitespace)
 (setq whitespace-line-column fill-column) ;; limit line length
-(setq whitespace-style '(face lines-tail))
+(setq whitespace-style '(tabs tab-mark ))
 
 ;; (add-hook 'prog-mode-hook 'whitespace-mode)
 (global-whitespace-mode +1)

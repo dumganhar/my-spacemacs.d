@@ -285,7 +285,7 @@
       (require 'ace-pinyin)
       (setq ace-pinyin-use-avy t)
       (setq avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-      (global-set-key (kbd "C-c g") 'avy-goto-char-2))))
+      (global-set-key (kbd "C-c C-g") 'avy-goto-char-2))))
 
 (defun zilongshanren/init-helm-ls-git ()
   (use-package helm-ls-git
